@@ -55,7 +55,7 @@
     </MtouchVerbosity>
     <NoWarn>
     </NoWarn>
-    <LangVersion>Default</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>pdbonly</DebugType>
@@ -75,7 +75,7 @@
     </MtouchVerbosity>
     <NoWarn>
     </NoWarn>
-    <LangVersion>Default</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -101,7 +101,7 @@
     </MtouchVerbosity>
     <NoWarn>
     </NoWarn>
-    <LangVersion>Default</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

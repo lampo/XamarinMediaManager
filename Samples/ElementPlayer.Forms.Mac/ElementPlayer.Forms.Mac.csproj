@@ -56,7 +56,7 @@
     </XamMacArch>
     <NoWarn>
     </NoWarn>
-    <LangVersion>Default</LangVersion>
+    <LangVersion>9</LangVersion>
     <AOTMode>None</AOTMode>
   </PropertyGroup>
   <ItemGroup>
