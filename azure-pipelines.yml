@@ -1,19 +1,23 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+#
+# Continuous Integration Pipeline
+#
+# This pipeline gets run after all merges into the master branch
+# ignoring all markdown (*.md) files. The artifacts produced
+# will not have any version suffix.
+#
+name: '1.2.$(date:yyMM).$(date:dd)$(rev:rrr)-ramsey'
 
+resources:
+- repo: self
+
+pr: none
 trigger:
-- develop
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - '**/*.md'
 
-pool:
-  vmImage: windows-latest
-
-steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Ramsey+ Azure Subscription'
-    scriptType: 'ps'
-    scriptLocation: 'scriptPath'
-    scriptPath: 'build.ps1'
-    arguments: 'Configuration=Release'
+jobs:
+- template: build-template.yml
