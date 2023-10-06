@@ -12,18 +12,16 @@ jobs:
   # Restore NuGet Packages.
   - task: DotNetCoreCLI@2
     displayName: 'Restore NuGet packages'
-    inputs:    
+    inputs:
       command: 'restore'
       projects: 'MediaManager.sln'
       verbosityRestore: 'Normal'
 
   # Build the solution.
-  - task: DotNetCoreCLI@2
-    displayName: 'Build Solution'
+  - task: MSBuild@1
     inputs:
-      command: 'build'
-      projects: 'MediaManager.sln'
-      arguments: '--configuration Release --nologo --no-restore -p:OfficialBuildNumber=$(Build.BuildNumber)'
+      solution: 'MediaManager.sln'
+      msbuildArguments: '/p:Configuration=Release /p:OfficialBuildNumber=$(Build.BuildNumber) /p:NoWarn=NU1605'
 
   # Run the unit tests.
   - task: DotNetCoreCLI@2
