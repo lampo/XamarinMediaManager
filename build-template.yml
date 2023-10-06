@@ -30,7 +30,7 @@ jobs:
     inputs:
       command: pack
       nobuild: true
-      packagesToPack: 'MediaManager*/**/*.csproj'
+      packagesToPack: '**/*.csproj'
       configuration: Release
       buildProperties: 'OfficialBuildNumber=$(Build.BuildNumber)'
       verbosityPack: Normal
