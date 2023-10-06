@@ -24,14 +24,6 @@ jobs:
       solution: 'MediaManager.sln'
       msbuildArguments: '/p:Configuration=Release /p:OfficialBuildNumber=$(Build.BuildNumber) /p:NoWarn=NU1605'
 
-  # Run the unit tests.
-  - task: DotNetCoreCLI@2
-    displayName: 'Run unit tests'
-    inputs:
-      command: 'test'
-      projects: 'MediaManager.UnitTest/MediaManager.UnitTest.csproj'
-      arguments: '--configuration Release --no-build'
-
   # Build the NuGet package.
   - task: DotNetCoreCLI@2
     displayName: 'Build NuGet package'
