@@ -22,11 +22,11 @@ jobs:
     displayName: 'Build solution'
     inputs:
       solution: 'MediaManager.sln'
-      msbuildArguments: '/p:Configuration=Release /p:OfficialBuildNumber=$(Build.BuildNumber) /p:NoWarn=NU1605'
+      msbuildArguments: '/p:Configuration=Release;OfficialBuildNumber=$(Build.BuildNumber);NoWarn=NU1605'
 
   - task: UseDotNet@2
     inputs:
-      version: '6.0.x'
+      version: '7.0.x'
       packageType: runtime
 
     # Build the NuGet package.
@@ -35,14 +35,16 @@ jobs:
     inputs:
       command: pack
       nobuild: true
-      packagesToPack: '**/*.csproj'
       configuration: Release
       buildProperties: 'OfficialBuildNumber=$(Build.BuildNumber)'
       verbosityPack: Normal
       packDirectory: '$(Build.ArtifactStagingDirectory)'
 
-#  - script: dotnet pack --no-build --no-restore --configuration Release --output $(Build.ArtifactStagingDirectory) /p:Configuration=Release;OfficialBuildNumber=$(Build.BuildNumber);NoWarn=NU1605 --verbosity detailed
-#    displayName: 'Build NuGet package'
+#  - task: MSBuild@1
+#    displayName: 'Package solution'
+#    inputs:
+#      solution: 'MediaManager.sln'
+#      msbuildArguments: '/p:Configuration=Release;OfficialBuildNumber=$(Build.BuildNumber);NoWarn=NU1605'
 
   # Publish the NuGet package to the Azure Pipeline.
   - task: PublishBuildArtifacts@1
