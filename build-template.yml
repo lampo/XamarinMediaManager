@@ -29,22 +29,15 @@ jobs:
       version: '7.0.x'
       packageType: runtime
 
-    # Build the NuGet package.
-  - task: DotNetCoreCLI@2
-    displayName: 'Build NuGet package'
+  # Build the NuGet package.
+  - task: NuGetCommand@2
+    displayName: 'Pack Nuget'
     inputs:
-      command: pack
-      nobuild: true
-      configuration: Release
-      buildProperties: 'OfficialBuildNumber=$(Build.BuildNumber)'
-      verbosityPack: Normal
-      packDirectory: '$(Build.ArtifactStagingDirectory)'
-
-#  - task: MSBuild@1
-#    displayName: 'Package solution'
-#    inputs:
-#      solution: 'MediaManager.sln'
-#      msbuildArguments: '/p:Configuration=Release;OfficialBuildNumber=$(Build.BuildNumber);NoWarn=NU1605'
+      command: 'pack'
+      packagesToPack: '**/*.nuspec'
+      versioningScheme: 'byEnvVar'
+      versionEnvVar: 'Build.BuildNumber'
+      packDestination: '$(Build.ArtifactStagingDirectory)'
 
   # Publish the NuGet package to the Azure Pipeline.
   - task: PublishBuildArtifacts@1
