@@ -29,7 +29,8 @@ jobs:
     displayName: 'Build NuGet package'
     inputs:
       command: pack
-#      nobuild: true
+      nobuild: true
+      norestore: true
       packagesToPack: '**/*.csproj'
       configuration: Release
       buildProperties: 'OfficialBuildNumber=$(Build.BuildNumber)'
