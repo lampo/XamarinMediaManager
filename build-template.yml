@@ -30,7 +30,6 @@ jobs:
     inputs:
       command: pack
       nobuild: true
-      norestore: true
       packagesToPack: '**/*.csproj'
       configuration: Release
       buildProperties: 'OfficialBuildNumber=$(Build.BuildNumber)'
