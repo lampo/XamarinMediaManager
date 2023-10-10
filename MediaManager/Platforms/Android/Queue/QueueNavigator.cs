@@ -1,4 +1,6 @@
-﻿using Android.Runtime;
+﻿using System;
+using System.Linq;
+using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
