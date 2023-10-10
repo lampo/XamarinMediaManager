@@ -1,0 +1,47 @@
+jobs:
+- job: 'BuildAndPublishJob'
+
+  pool:
+    vmImage: 'windows-latest'
+
+  workspace:
+    clean: all
+
+  steps:
+
+  # Restore NuGet Packages.
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: 'MediaManager.sln'
+      verbosityRestore: 'Normal'
+
+  # Build the solution.
+  - task: MSBuild@1
+    displayName: 'Build solution'
+    inputs:
+      solution: 'MediaManager.sln'
+      msbuildArguments: '/p:Configuration=Release;OfficialBuildNumber=$(Build.BuildNumber);NoWarn=NU1605'
+
+  - task: UseDotNet@2
+    inputs:
+      version: '7.0.x'
+      packageType: runtime
+
+  # Build the NuGet package.
+  - task: NuGetCommand@2
+    displayName: 'Pack Nuget'
+    inputs:
+      command: 'pack'
+      packagesToPack: '**/*.nuspec'
+      versioningScheme: 'byEnvVar'
+      versionEnvVar: 'Build.BuildNumber'
+      packDestination: '$(Build.ArtifactStagingDirectory)'
+
+  # Publish the NuGet package to the Azure Pipeline.
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'nuget'
+      publishLocation: 'Container'
