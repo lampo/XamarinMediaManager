@@ -20,6 +20,8 @@ namespace MediaManager
 
     public interface IMediaManager : IPlaybackManager, IDisposable
     {
+        bool IsInitialized { get; }
+
         IMediaPlayer MediaPlayer { get; set; }
 
         IMediaLibrary Library { get; set; }
