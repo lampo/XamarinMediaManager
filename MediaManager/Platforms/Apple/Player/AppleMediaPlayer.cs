@@ -265,6 +265,7 @@ namespace MediaManager.Platforms.Apple.Player
         {
             if (Player != null)
             {
+                Player.RemoveTimeObserver(playbackTimeObserver);
                 Player.RemoveAllItems();
             }
             if (MediaManager != null)
