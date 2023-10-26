@@ -168,7 +168,7 @@ namespace MediaManager.Platforms.Apple.Player
         {
             Exception exception = null;
             string message = null;
-            
+
             var error = Player?.CurrentItem?.Error;
             if(error != null)
             {
@@ -179,7 +179,7 @@ namespace MediaManager.Platforms.Apple.Player
             {
                 message = obj?.ToString() ?? "MediaItem failed with unknown reason";
                 exception = new ApplicationException(message);
-            }            
+            }
 
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue?.Current, exception, message));
         }
@@ -261,16 +261,17 @@ namespace MediaManager.Platforms.Apple.Player
             await Player?.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, scale), CMTime.Zero, CMTime.Zero);
         }
 
-        public override async Task Stop()
+        public override Task Stop()
         {
             if (Player != null)
             {
-                Player.Pause();
-                await SeekTo(TimeSpan.Zero);
-                Player.ReplaceCurrentItemWithPlayerItem(null); // Needed for stop buffering
+                Player.RemoveTimeObserver(playbackTimeObserver);
+                Player.RemoveAllItems();
             }
             if (MediaManager != null)
                 MediaManager.State = MediaPlayerState.Stopped;
+
+            return Task.CompletedTask;
         }
 
         protected override void Dispose(bool disposing)

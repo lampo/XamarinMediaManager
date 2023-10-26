@@ -5,7 +5,7 @@
 # ignoring all markdown (*.md) files. The artifacts produced
 # will all have the '-beta' version suffix.
 #
-name: '1.7.$(date:yyMM).$(date:dd)$(rev:rrr)-ramsey-beta'
+name: '1.8.$(date:yyMM).$(date:dd)$(rev:rrr)-ramsey-beta'
 
 resources:
 - repo: self
