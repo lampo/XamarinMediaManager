@@ -205,7 +205,16 @@ namespace MediaManager.Platforms.Apple.Player
         public override async Task Play(IMediaItem mediaItem)
         {
             InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
-            await Play(mediaItem.ToAVPlayerItem());
+
+            try
+            {
+                await Play(mediaItem.ToAVPlayerItem());
+            }
+            catch (Exception exception)
+            {
+                MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(mediaItem, exception, "Unable to play media item"));
+            }
+
             InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
@@ -223,7 +232,14 @@ namespace MediaManager.Platforms.Apple.Player
                 playbackTimeObserver = Player.AddBoundaryTimeObserver(values, null, OnPlayerBoundaryReached);
             }
 
-            await Play(mediaItem.ToAVPlayerItem());
+            try
+            {
+                await Play(mediaItem.ToAVPlayerItem());
+            }
+            catch (Exception exception)
+            {
+                MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(mediaItem, exception, "Unable to play media item"));
+            }
 
             if (startAt != TimeSpan.Zero)
                 await SeekTo(startAt);
@@ -263,12 +279,20 @@ namespace MediaManager.Platforms.Apple.Player
 
         public override Task Stop()
         {
-            if (Player != null)
+            try
             {
-                Player.RemoveAllItems();
+                if (Player != null)
+                {
+                    Player.RemoveAllItems();
+                }
+
+                if (MediaManager != null)
+                    MediaManager.State = MediaPlayerState.Stopped;
             }
-            if (MediaManager != null)
-                MediaManager.State = MediaPlayerState.Stopped;
+            catch (Exception exception)
+            {
+                MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue?.Current, exception, "Unable to stop the current media item"));
+            }
 
             return Task.CompletedTask;
         }
